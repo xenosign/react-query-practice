@@ -1,22 +1,31 @@
 import { useQuery } from "@tanstack/react-query";
-import { getPosts, getPostsByUsername } from "../api";
+import { getPosts, getPostsByUsername, occurError } from "../api";
 
 function HomePage() {
-  const result = useQuery({
+  const {
+    data: postData,
+    isPending,
+    isError,
+  } = useQuery({
     queryKey: ["posts"],
     queryFn: getPosts,
     staleTime: 60 * 1000,
     gcTime: 60 * 1000 * 10,
   });
-  console.log("result", result);
 
-  const username = 'codeit'; // 임의로 username을 지정
-  const { data: postsDataByUsername } = useQuery({
-    queryKey: ['posts', username],
-    queryFn: () => getPostsByUsername(username),
-  });
+  if (isPending) return <h1>로딩 중</h1>;
 
-  console.log("postsDataByUsername", postsDataByUsername);
+  if (isError) return <h1>에러 발생</h1>;
+
+  const posts = postData?.results ?? [];
+
+  console.log(posts);
+
+  // const username = 'codeit'; // 임의로 username을 지정
+  // const { data: postsDataByUsername } = useQuery({
+  //   queryKey: ['posts', username],
+  //   queryFn: () => getPostsByUsername(username),
+  // });
 
   return (
     <div>
