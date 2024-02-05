@@ -12,3 +12,19 @@ export async function getPostsByUsername(username) {
 export async function occurError() {
   throw new Error("에러 발생");
 }
+
+export async function uploadPost(newPost) {
+  const response = await fetch(`${BASE_URL}/posts`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newPost),
+  });
+
+  if (!response.ok) {
+    throw new Error("업로드 실패");
+  }
+
+  return await response.json();
+}
