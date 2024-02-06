@@ -12,20 +12,23 @@ import { getPages, getTest } from "../newApi";
 export default function TestPage() {
   const queryClient = useQueryClient();
 
-  const {
-    data: result,
-    isPending,
-    isError,
-    isPlaceholderData,
-  } = useQuery({
-    queryKey: ["test"],
-    queryFn: () => getPages(1, 2),
-    staleTime: 60 * 1000,
-    gcTime: 60 * 1000 * 10,
-    placeholderData: keepPreviousData,
+  const results = useInfiniteQuery({
+    queryKey: ["pages"],
+    queryFn: ({ pageParam }) => getPages(pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) => {
+      console.log("allPages", allPages);
+      console.log("allPageParams", allPageParams);
+      console.log("lastPage", lastPage);
+      return lastPage.hasMore ? lastPageParam + 1 : undefined;
+    },
   });
 
-  console.log(result);
+  console.log(results);
+
+  if (results.isPending) return <h1>로딩중</h1>;
+
+  if (results.isError) return <h1>에러 발생</h1>;
 
   return <div>TestPage</div>;
 }
