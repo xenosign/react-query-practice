@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 const db = {
-  member: [
+  t1: [
     {
       id: 1,
       name: "Faker",
@@ -24,7 +24,7 @@ const db = {
     {
       id: 3,
       name: "Keria",
-      position: "Support",
+      position: "SUPPORT",
     },
     {
       id: 4,
@@ -36,16 +36,40 @@ const db = {
       name: "Zeus",
       position: "TOP",
     }
+  ],
+  kt: [
+    {
+      id: 1,
+      name: "Deft",
+      position: "AD",
+    },
+    {
+      id: 2,
+      name: "BDD",
+      position: "MID",
+    },
+    {
+      id: 3,
+      name: "Pyosik",
+      position: "JUNGLE",
+    },
+    {
+      id: 4,
+      name: "Beryl",
+      position: "SUPPORT",
+    },
+    {
+      id: 5,
+      name: "Perfect",
+      position: "TOP",
+    }
   ]
 }
 
-app.get("/test", (req, res) => {
-  const str = "통신 완료";
-  return res.json(str);
-});
 
-app.get("/player", (req, res) => {
-  return res.json(db);
+app.get("/players", (req, res) => {
+  const data = db[req.query.team ? req.query.team : 't1'];
+  return res.json(data);
 });
 
 app.listen(PORT, () => {

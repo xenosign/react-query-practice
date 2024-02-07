@@ -1,8 +1,8 @@
 const BASE_URL = "http://localhost:4000";
 
-export async function getPlayer() {
-  const response = await fetch(`${BASE_URL}/player`);
+export async function getPlayer(teamName) {
+  const url = `${BASE_URL}/players${teamName ? '?team=' + teamName : ''}`;
+  const response = await fetch(url);
   const result = await response.json();
-  console.log(result);
   return result;
 }

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useEffect, useState } from "react";
 
 import {
@@ -13,28 +12,37 @@ import { getPlayer } from '../api/toneAPi';
 export default function Tone() {
   const queryClient = useQueryClient();
 
+  const [teamName, setTeamName] = useState('t1');
+  const [render, setRender] = useState(false);
+
   const {
-    data: playerData,
-    isPending,
-    isError
+    data,
+    isLoading,
+    isError,
+    isPlaceholderData,
   } = useQuery({
-    queryKey: ['t1'],
-    queryFn: () => getPlayer(),    
+    queryKey: ['team', teamName],
+    queryFn: () => getPlayer(teamName),   
+    placeholderData: keepPreviousData,    
   });  
 
-  if (isPending) return <h1>로딩중</h1>;
+  if (isLoading) return <h1>로딩중</h1>;
 
   if (isError) return <h1>에러 발생</h1>;
 
-  const players = playerData?.member ?? [];
+  const players = data ?? [];
 
   return (
     <div>
       <ul>
+        <h1>{teamName}</h1>
         {players.map((player) => {
           return <li key={player.id}>ID : {player.name} / 포지션 : {player.position}</li>
         })}
-      </ul>
+      </ul>          
+      <button onClick={() => setTeamName('t1')}>T1</button>
+      <button onClick={() => setTeamName('kt')}>KT</button>
+      <button onClick={() => setRender(prev => !prev)}>리렌더</button>
     </div>
   )
 }
