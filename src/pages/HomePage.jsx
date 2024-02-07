@@ -11,7 +11,7 @@ import {
   occurError,
   uploadPost,
   getUserInfo,
-} from "../api";
+} from "../api/api";
 import { useEffect, useState } from "react";
 
 function HomePage() {

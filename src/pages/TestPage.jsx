@@ -7,7 +7,7 @@ import {
   useInfiniteQuery,
 } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { getPages, getTest } from "../newApi";
+import { getPages, getTest } from "../api/newApi";
 
 export default function TestPage() {
   const queryClient = useQueryClient();
