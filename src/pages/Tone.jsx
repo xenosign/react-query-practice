@@ -35,6 +35,15 @@ export default function Tone() {
     },
   });
 
+  useEffect(() => {
+    if (teamName === "t1") {
+      queryClient.prefetchQuery({
+        queryKey: ["team", "kt"],
+        queryFn: () => getPlayer("kt"),
+      });
+    }
+  }, [teamName, queryClient]);
+
   const handleAddPlayer = (e) => {
     e.preventDefault();
 
