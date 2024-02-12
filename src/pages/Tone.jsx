@@ -20,10 +20,18 @@ export default function Tone() {
 
   const inputRef = useRef();
 
-  const { data, isLoading, isError, isPlaceholderData } = useQuery({
+  // const { data, isLoading, isError, isPlaceholderData } = useQuery({
+  //   queryKey: ["team", teamName],
+  //   queryFn: () => getPlayer(teamName),
+  //   placeholderData: keepPreviousData,
+  // });
+
+  const { data, isLoading, isError, isPlaceholderData } = useInfiniteQuery({
     queryKey: ["team", teamName],
     queryFn: () => getPlayer(teamName),
-    placeholderData: keepPreviousData,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) =>
+      lastPage.hasMore ? lastPageParam + 1 : undefined,
   });
 
   const addPlayerMutation = useMutation({
@@ -65,7 +73,9 @@ export default function Tone() {
 
   if (isError) return <h1>에러 발생</h1>;
 
-  const players = data ?? [];
+  const players = data.pages[0] ?? [];
+
+  console.log(players);
 
   return (
     <div>
@@ -78,7 +88,7 @@ export default function Tone() {
           KT
         </button>
         <ul>
-          {players.map((player, idx) => {
+          {players?.map((player, idx) => {
             return (
               <li key={Math.random()}>
                 ID : {player.name} / 포지션 : {player.position}
