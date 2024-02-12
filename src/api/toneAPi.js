@@ -22,3 +22,10 @@ export async function addPlayer(teamName, newPlayer) {
 
   return await response.json();
 }
+
+export async function getArr(page, length) {
+  const url = `${BASE_URL}/infi/${page}/${length}`;
+  const response = await fetch(url);
+  const result = await response.json();
+  return result;
+}

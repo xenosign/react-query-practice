@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import HomePage from "./pages/HomePage";
 import TestPage from "./pages/TestPage";
 import Tone from "./pages/Tone";
+import Infi from "./pages/Infi";
 
 const queryClient = new QueryClient();
 
@@ -14,6 +15,7 @@ function App() {
       {/* <HomePage /> */}
       {/* <TestPage /> */}
       <Tone />
+      <Infi />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

@@ -20,19 +20,23 @@ export default function Tone() {
 
   const inputRef = useRef();
 
-  // const { data, isLoading, isError, isPlaceholderData } = useQuery({
-  //   queryKey: ["team", teamName],
-  //   queryFn: () => getPlayer(teamName),
-  //   placeholderData: keepPreviousData,
-  // });
-
-  const { data, isLoading, isError, isPlaceholderData } = useInfiniteQuery({
+  const { data, isLoading, isError, isPlaceholderData } = useQuery({
     queryKey: ["team", teamName],
     queryFn: () => getPlayer(teamName),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) =>
-      lastPage.hasMore ? lastPageParam + 1 : undefined,
+    placeholderData: keepPreviousData,
   });
+
+  // const { data, isLoading, isError, isPlaceholderData } = useInfiniteQuery({
+  //   queryKey: ["team", teamName],
+  //   queryFn: ({ pageParam }) => {
+  //     console.log("pageParam", pageParam);
+  //     return getPlayer(teamName);
+  //   },
+  //   initialPageParam: 1,
+  //   getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) => {
+  //     return lastPage.hasMore ? lastPageParam + 1 : undefined;
+  //   },
+  // });
 
   const addPlayerMutation = useMutation({
     mutationFn: (newPlayer) => {
@@ -73,9 +77,7 @@ export default function Tone() {
 
   if (isError) return <h1>에러 발생</h1>;
 
-  const players = data.pages[0] ?? [];
-
-  console.log(players);
+  const players = data ?? [];
 
   return (
     <div>
@@ -90,7 +92,7 @@ export default function Tone() {
         <ul>
           {players?.map((player, idx) => {
             return (
-              <li key={Math.random()}>
+              <li key={idx}>
                 ID : {player.name} / 포지션 : {player.position}
               </li>
             );
